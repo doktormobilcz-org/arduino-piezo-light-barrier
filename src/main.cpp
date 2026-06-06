@@ -23,6 +23,10 @@ void setup()
 {
   pinMode(buzzerPin, OUTPUT);
   pinMode(sensorPin, INPUT_PULLUP); // interní pull-up rezistor
+
+  // Nastavíme čas posledního spuštění hluboko do minulosti,
+  // aby byl cooldown splněn hned při prvním spuštění.
+  lastTriggerTime = -cooldown;
 }
 
 void loop()
@@ -34,7 +38,7 @@ void loop()
   {
     unsigned long now = millis();
 
-    if (now - lastTriggerTime > cooldown || lastTriggerTime == 0)
+    if (now - lastTriggerTime >= cooldown)
     {
       playJingle();
       lastTriggerTime = now;
