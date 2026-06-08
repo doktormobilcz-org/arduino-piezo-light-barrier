@@ -10,13 +10,25 @@ const unsigned long cooldown = 30000; // 30 sekund
 
 void playJingle()
 {
-  tone(buzzerPin, 1000, 120);
-  delay(150);
-  tone(buzzerPin, 1400, 120);
-  delay(150);
-  tone(buzzerPin, 1800, 180);
-  delay(220);
-  noTone(buzzerPin);
+  // Frekvence pro Samsung písknutí: C6, E6, C7, B6, G6
+  int frequencies[] = {1047, 1319, 2093, 1976, 1568};
+
+  // Délka trvání jednotlivých tónů v milisekundách
+  int durations[] = {100, 100, 140, 140, 250};
+
+  // Krátká pauza po každém tónu pro čisté oddělení zvuku
+  int pauses[] = {50, 50, 50, 140, 10};
+
+  for (int i = 0; i < 5; i++)
+  {
+    // Spustí tón o dané frekvenci a délce
+    tone(buzzerPin, frequencies[i], durations[i]);
+
+    // delay musí pokrýt délku tónu + pauzu před dalším tónem,
+    // protože funkce tone() neblokuje běh programu
+    delay(durations[i] + pauses[i]);
+  }
+  noTone(buzzerPin); // Pro jistotu vypne bzučák
 }
 
 void setup()
