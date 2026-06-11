@@ -10,22 +10,21 @@ const unsigned long cooldown = 30000; // 30 sekund
 
 void playJingle()
 {
-  // Frekvence pro Samsung písknutí: C6, E6, C7, B6, G6
-  int frequencies[] = {1047, 1319, 2093, 1976, 1568};
+  // Frekvence posunuta o oktávu výš (932 Hz * 2 = 1864 Hz) pro lepší slyšitelnost
+  int frequencies[] = {1864, 1864, 1864, 1864};
 
   // Délka trvání jednotlivých tónů v milisekundách
-  int durations[] = {100, 100, 140, 140, 250};
+  int durations[] = {170, 170, 170, 170};
 
-  // Krátká pauza po každém tónu pro čisté oddělení zvuku
-  int pauses[] = {50, 50, 50, 140, 10};
+  // Pauzy mezi tóny: krátká uvnitř dvojice, dlouhá mezi oběma páry
+  int pauses[] = {115, 690, 115, 50};
 
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < 4; i++)
   {
     // Spustí tón o dané frekvenci a délce
     tone(buzzerPin, frequencies[i], durations[i]);
 
-    // delay musí pokrýt délku tónu + pauzu před dalším tónem,
-    // protože funkce tone() neblokuje běh programu
+    // delay musí pokrýt délku tónu + pauzu před dalším tónem
     delay(durations[i] + pauses[i]);
   }
   noTone(buzzerPin); // Pro jistotu vypne bzučák
@@ -36,8 +35,7 @@ void setup()
   pinMode(buzzerPin, OUTPUT);
   pinMode(sensorPin, INPUT_PULLUP); // interní pull-up rezistor
 
-  // Nastavíme čas posledního spuštění hluboko do minulosti,
-  // aby byl cooldown splněn hned při prvním spuštění.
+  // Nastavíme čas posledního spuštění hluboko do minulosti
   lastTriggerTime = -cooldown;
 }
 
